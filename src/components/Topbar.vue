@@ -108,7 +108,6 @@ const register = () => {
 		user-select: none;
 		letter-spacing: 2px;
 		color: var(--prinary-color);
-		margin: 40px;
 	}
 	.nav {
 		display: flex;

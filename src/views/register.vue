@@ -63,7 +63,7 @@ const show = (id) => {
 		align-items: center;
 		justify-content: center;
 		.header {
-			letter-spacing: 6px;
+			letter-spacing: 2px;
 			color: var(--prinary-color);
 			margin: 40px;
 		}
