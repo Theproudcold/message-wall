@@ -1,0 +1,14 @@
+:root {
+	/* ------Colors------ */
+	--prinary-color: #3b73f0;
+	--link-color: #1890ff;
+	--success-color: #22bf87;
+	--warning-color: #f67770;
+	--error-color: #f35248;
+	/* ------中性色------ */
+	--gray-1: #202020;
+	--gray-2: #5b5b5b;
+	--gray-3: #949494;
+	--gray-9: #f6f6f6;
+	--gray-10: #ffffff;
+}
