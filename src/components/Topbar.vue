@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import HyButton from "./HyButton.vue";
+import { useRouter } from "vue-router";
 const nav = ref([]);
 nav.value = [
 	{
@@ -34,11 +35,14 @@ const login = () => {
 	alert("登录成功");
 };
 // 注册
-const register = () => {};
+const router = useRouter();
+const register = () => {
+	router.push("/register");
+};
 </script>
 <template>
 	<div class="topbar">
-		<div class="logo">123</div>
+		<div class="logo"><h1>Hypo</h1></div>
 		<div class="nav">
 			<hy-button
 				class="nav-item button"
@@ -58,7 +62,7 @@ const register = () => {};
 		</div>
 		<transition name="fade">
 			<div class="signin fade-in-out" v-show="show">
-				<i class="quit" @click="quit">x</i>
+				<i class="quit iconfont icon-close" @click="quit"></i>
 				<p class="welcome">欢迎登录</p>
 				<h2 class="title">留言墙</h2>
 				<div class="signin-body">
@@ -100,6 +104,12 @@ const register = () => {};
 	z-index: 1001;
 	-webkit-backdrop-filter: blur(20px);
 	backdrop-filter: blur(20px);
+	.logo {
+		user-select: none;
+		letter-spacing: 2px;
+		color: var(--prinary-color);
+		margin: 40px;
+	}
 	.nav {
 		display: flex;
 		align-items: center;
@@ -168,12 +178,12 @@ const register = () => {};
 				text-align: center;
 				padding: 8px;
 				height: 36px;
-				border: 1px solid var(--fontColorBottom, #949494);
+				border: 1px solid var(--gray-3);
 				background: none;
 				outline: none;
-				color: var(--fontColorTop, #202020);
+				color: var(--gray-1);
 				&:focus {
-					border-color: var(--fontColorTop, #202020);
+					border-color: var(--gray-1);
 				}
 			}
 		}
