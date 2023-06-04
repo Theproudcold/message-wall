@@ -92,6 +92,7 @@ const clooseModal = () => {
 		.modal-main {
 			height: 100%;
 			overflow-y: auto;
+			padding-bottom: 190px;
 			margin: 2px;
 			&::-webkit-scrollbar {
 				/*滚动条整体样式*/

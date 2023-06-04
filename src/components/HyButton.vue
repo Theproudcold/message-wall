@@ -54,7 +54,7 @@ const props = defineProps({
 	color: var(--gray-10);
 }
 .secondary {
-	background-color: var(--gray-10);
+	background: none;
 	color: var(--gray-1);
 	border: 1px solid var(--gray-1);
 }

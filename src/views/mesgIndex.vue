@@ -3,8 +3,11 @@ import { getLists } from "../api/api";
 import Topbar from "../components/Topbar.vue";
 import Footbar from "../components/Footbar.vue";
 import Card from "@/components/Card.vue";
-import { ref } from "vue";
 import HyModal from "@/components/HyModal.vue";
+import NewCard from "@/components/NewCard.vue";
+import CardDetail from "@/components/CardDetail.vue";
+import { ref } from "vue";
+
 const arr = {
 	type: 1,
 	message: "213213",
@@ -15,8 +18,32 @@ const arr = {
 	color: "red",
 	imgurl: "eeeee",
 };
+const title = ref("留言");
+// 当前选中的卡片
+const currentcard = ref(-1);
+// 编辑卡片
+const changeCard = (index) => {
+	if (currentcard.value != index) {
+		title.value = "留言";
+		currentcard.value = index;
+		isShowModel.value = true;
+	} else {
+		currentcard.value = -1;
+		isShowModel.value = false;
+	}
+};
 const selected = ref(-1);
-const list = ["留言", "目标", "理想", "爱情", "学业"];
+const list = [
+	"留言",
+	"目标",
+	"理想",
+	"爱情",
+	"学业",
+	"家庭",
+	"事业",
+	"友情",
+	"无题",
+];
 const toList = (index) => {
 	selected.value = index;
 };
@@ -24,14 +51,15 @@ async function onClick() {
 	let res = await getLists(arr);
 	console.log(res);
 }
+
 // 显示隐藏
 const isShowModel = ref(false);
-const showModel = (index) => {
-	if (isShowModel.value && index != -1) {
-		console.log(123);
-	} else {
-		isShowModel.value = !isShowModel.value;
-	}
+const addCard = () => {
+	title.value = "写留言";
+	showModel();
+};
+const showModel = () => {
+	isShowModel.value = !isShowModel.value;
 };
 </script>
 
@@ -60,16 +88,21 @@ const showModel = (index) => {
 		</ul>
 		<div class="main">
 			<Card
-				@click="showModel(index)"
+				@click="changeCard(index)"
 				class="node-list"
 				v-for="index in 12"
-				:key="index"></Card>
+				:key="index"
+				:class="{ cardselect: index == currentcard }">
+			</Card>
 		</div>
-		<HyModal
-			:isShow="isShowModel"
-			title="留言"
-			@cloose="showModel(-1)"></HyModal>
-		<div v-if="!isShowModel" class="add" @click="showModel(index)">
+		<HyModal :isShow="isShowModel" :title="title" @cloose="showModel">
+			<NewCard
+				:labels="list"
+				@quit="showModel"
+				v-if="currentcard == -1"></NewCard>
+			<CardDetail v-else></CardDetail>
+		</HyModal>
+		<div v-if="!isShowModel" class="add" @click="addCard">
 			<i class="iconfont icon-plus"></i>
 		</div>
 	</div>
@@ -121,6 +154,9 @@ const showModel = (index) => {
 		display: flex;
 		flex-wrap: wrap;
 		margin: auto;
+		.cardselect {
+			border: 1px solid var(--prinary-color);
+		}
 		.node-list {
 			height: 240px;
 		}
