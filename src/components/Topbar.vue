@@ -60,8 +60,8 @@ const register = () => {
 				<div class="nouser"></div>
 			</div>
 		</div>
-		<transition name="fade">
-			<div class="signin fade-in-out" v-show="show">
+		<transition name="showsignin">
+			<div class="signin" v-show="show">
 				<i class="quit iconfont icon-close" @click="quit"></i>
 				<p class="welcome">欢迎登录</p>
 				<h2 class="title">留言墙</h2>
@@ -131,12 +131,41 @@ const register = () => {
 			position: relative;
 			height: 36px;
 			width: 36px;
-			border-radius: 20px;
-			background-image: linear-gradient(
-				180deg,
-				rgba(81, 169, 255, 0.5),
-				#51a9ff
-			);
+			.nouser {
+				width: 100%;
+				height: 100%;
+				cursor: pointer;
+				border-radius: 20px;
+				background-image: linear-gradient(
+					180deg,
+					rgba(81, 169, 255, 0.5),
+					#51a9ff
+				);
+			}
+		}
+	}
+	.showsignin {
+		&-enter {
+			&-from {
+				opacity: 0;
+			}
+			&-active {
+				transition: all 0.3s ease-in;
+			}
+			&-to {
+				opacity: 1;
+			}
+		}
+		&-leave {
+			&-from {
+				opacity: 1;
+			}
+			&-active {
+				transition: all 0.3s ease-out;
+			}
+			&-to {
+				opacity: 0;
+			}
 		}
 	}
 	.signin {
@@ -145,13 +174,12 @@ const register = () => {
 		right: 14px;
 		width: 260px;
 		height: 320px;
-		background: var(--other1, hsla(0, 0%, 100%, 0.8));
+		background: hsla(0, 0%, 100%, 0.8);
 		box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 		-webkit-backdrop-filter: blur(20px);
 		backdrop-filter: blur(20px);
 		text-align: center;
 		padding: 0 30px;
-		transition: all 0.3s ease;
 		.quit {
 			position: absolute;
 			right: 16px;
@@ -203,15 +231,6 @@ const register = () => {
 				color: var(--link-color);
 			}
 		}
-	}
-	// 过渡效果
-	.fade-enter-active,
-	.fade-leave-active {
-		transition: opacity 0.5s;
-	}
-	.fade-enter,
-	.fade-leave-to {
-		opacity: 0;
 	}
 }
 </style>

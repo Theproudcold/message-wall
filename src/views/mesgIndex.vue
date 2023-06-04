@@ -4,6 +4,7 @@ import Topbar from "../components/Topbar.vue";
 import Footbar from "../components/Footbar.vue";
 import Card from "@/components/Card.vue";
 import { ref } from "vue";
+import HyModal from "@/components/HyModal.vue";
 const arr = {
 	type: 1,
 	message: "213213",
@@ -23,6 +24,15 @@ async function onClick() {
 	let res = await getLists(arr);
 	console.log(res);
 }
+// 显示隐藏
+const isShowModel = ref(false);
+const showModel = (index) => {
+	if (isShowModel.value && index != -1) {
+		console.log(123);
+	} else {
+		isShowModel.value = !isShowModel.value;
+	}
+};
 </script>
 
 <template>
@@ -49,9 +59,19 @@ async function onClick() {
 			</li>
 		</ul>
 		<div class="main">
-			<Card class="node-list" v-for="index in 12" :key="index"></Card>
+			<Card
+				@click="showModel(index)"
+				class="node-list"
+				v-for="index in 12"
+				:key="index"></Card>
 		</div>
-		.
+		<HyModal
+			:isShow="isShowModel"
+			title="留言"
+			@cloose="showModel(-1)"></HyModal>
+		<div v-if="!isShowModel" class="add" @click="showModel(index)">
+			<i class="iconfont icon-plus"></i>
+		</div>
 	</div>
 	<!-- <Footbar /> -->
 </template>
@@ -62,6 +82,7 @@ async function onClick() {
 	margin: 0 auto;
 	padding-top: 52px;
 	.title {
+		user-select: none;
 		display: flex;
 		flex-direction: column;
 		text-align: center;
@@ -78,6 +99,7 @@ async function onClick() {
 	.label {
 		display: flex;
 		justify-content: center;
+		user-select: none;
 		.label-item {
 			padding: 0 14px;
 			margin: 0 4px;
@@ -105,6 +127,21 @@ async function onClick() {
 
 		::v-deep(.card:hover) {
 			margin-top: 0;
+		}
+	}
+	.add {
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		background-color: var(--gray-1);
+		width: 60px;
+		height: 60px;
+		text-align: center;
+		line-height: 60px;
+		border-radius: 50%;
+		i {
+			font-size: 24px;
+			color: var(--gray-10);
 		}
 	}
 }
