@@ -1,14 +1,19 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+	note: {
+		default: {},
+	},
+});
+</script>
 <template>
 	<div class="card">
 		<div class="card-header">
-			<p class="time">06/01 18:58</p>
-			<p class="label">留言</p>
+			<p class="time">{{ note.moment }}</p>
+			<p class="label">{{ note.label }}</p>
 		</div>
 		<div class="card-main">
 			<p>
-				山一程，水一程，身向榆关那畔行。夜深千帐灯。
-				风一更，雪一更，聒碎乡心梦不成。故园无此声。
+				{{ note.message }}
 			</p>
 		</div>
 		<div class="card-bottom">
@@ -20,9 +25,10 @@
 
 <style lang="scss" scoped>
 .card {
-	width: 288px;
 	margin: 6px;
 	padding: 10px;
+	// LEARN:解决抖动问题
+	border: 1px solid transparent;
 	background-color: rgba($color: #fcafa2, $alpha: 0.4);
 	transition: all 0.3s;
 	.card-header {

@@ -7,18 +7,86 @@ import HyModal from "@/components/HyModal.vue";
 import NewCard from "@/components/NewCard.vue";
 import CardDetail from "@/components/CardDetail.vue";
 import { ref } from "vue";
-
-const arr = {
-	type: 1,
-	message: "213213",
-	name: "resr",
-	userId: 110,
-	moment: "2023-10-10",
-	label: "res",
-	color: "red",
-	imgurl: "eeeee",
-};
 const title = ref("留言");
+const cardList = [
+	{
+		type: 1,
+		message:
+			"山一程，水一程，身向榆关那更，雪一更，聒碎乡心梦不成。故园无此声。",
+		name: "resr",
+		userId: 110,
+		moment: "2023-10-10",
+		label: "留言",
+		color: "red",
+		imgurl: "eeeee",
+	},
+	{
+		type: 1,
+		message:
+			"山一程，水一程，身。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
+		name: "resr",
+		userId: 110,
+		moment: "2023-10-10",
+		label: "留言",
+		color: "red",
+		imgurl: "eeeee",
+	},
+	{
+		type: 1,
+		message:
+			"山一程，榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
+		name: "resr",
+		userId: 110,
+		moment: "2023-10-10",
+		label: "留言",
+		color: "red",
+		imgurl: "eeeee",
+	},
+	{
+		type: 1,
+		message:
+			"山一程，水一程，身向榆关深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
+		name: "resr",
+		userId: 110,
+		moment: "2023-10-10",
+		label: "留言",
+		color: "red",
+		imgurl: "eeeee",
+	},
+	{
+		type: 1,
+		message:
+			"一程，水一程，身向榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
+		name: "resr",
+		userId: 110,
+		moment: "2023-10-10",
+		label: "留言",
+		color: "red",
+		imgurl: "eeeee",
+	},
+	{
+		type: 1,
+		message:
+			"山一，水一程，身向榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
+		name: "resr",
+		userId: 110,
+		moment: "2023-10-10",
+		label: "留言",
+		color: "red",
+		imgurl: "eeeee",
+	},
+	{
+		type: 1,
+		message:
+			"山一程，水一程，身向榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
+		name: "resr",
+		userId: 110,
+		moment: "2023-10-10",
+		label: "留言",
+		color: "red",
+		imgurl: "eeeee",
+	},
+];
 // 当前选中的卡片
 const currentcard = ref(-1);
 // 编辑卡片
@@ -32,6 +100,7 @@ const changeCard = (index) => {
 		isShowModel.value = false;
 	}
 };
+
 const selected = ref(-1);
 const list = [
 	"留言",
@@ -90,8 +159,9 @@ const showModel = () => {
 			<Card
 				@click="changeCard(index)"
 				class="node-list"
-				v-for="index in 12"
+				v-for="(item, index) in cardList"
 				:key="index"
+				:note="item"
 				:class="{ cardselect: index == currentcard }">
 			</Card>
 		</div>
@@ -100,7 +170,7 @@ const showModel = () => {
 				:labels="list"
 				@quit="showModel"
 				v-if="currentcard == -1"></NewCard>
-			<CardDetail v-else></CardDetail>
+			<CardDetail v-else :card="cardList[currentcard]"></CardDetail>
 		</HyModal>
 		<div v-if="!isShowModel" class="add" @click="addCard">
 			<i class="iconfont icon-plus"></i>
@@ -137,6 +207,7 @@ const showModel = () => {
 			padding: 0 14px;
 			margin: 0 4px;
 			min-width: 16px;
+			border: 2px solid transparent;
 			color: var(--gray-2);
 			height: 28px;
 			line-height: 28px;
