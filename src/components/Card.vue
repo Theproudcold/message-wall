@@ -4,12 +4,23 @@ const props = defineProps({
 		default: {},
 	},
 });
+const list = [
+	"留言",
+	"目标",
+	"理想",
+	"爱情",
+	"学业",
+	"家庭",
+	"事业",
+	"友情",
+	"无题",
+];
 </script>
 <template>
 	<div class="card">
 		<div class="card-header">
 			<p class="time">{{ note.moment }}</p>
-			<p class="label">{{ note.label }}</p>
+			<p class="label">{{ list[note.label] }}</p>
 		</div>
 		<div class="card-main">
 			<p>

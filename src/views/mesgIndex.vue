@@ -1,98 +1,28 @@
 <script setup>
-import { getLists } from "../api/api";
 import Topbar from "../components/Topbar.vue";
 import Footbar from "../components/Footbar.vue";
 import Card from "@/components/Card.vue";
 import HyModal from "@/components/HyModal.vue";
 import NewCard from "@/components/NewCard.vue";
 import CardDetail from "@/components/CardDetail.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { getLabelList } from "@/api/wall.js";
 const title = ref("留言");
-const cardList = [
-	{
-		type: 1,
-		message:
-			"山一程，水一程，身向榆关那更，雪一更，聒碎乡心梦不成。故园无此声。",
-		name: "resr",
-		userId: 110,
-		moment: "2023-10-10",
-		label: "留言",
-		color: "red",
-		imgurl: "eeeee",
-	},
-	{
-		type: 1,
-		message:
-			"山一程，水一程，身。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
-		name: "resr",
-		userId: 110,
-		moment: "2023-10-10",
-		label: "留言",
-		color: "red",
-		imgurl: "eeeee",
-	},
-	{
-		type: 1,
-		message:
-			"山一程，榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
-		name: "resr",
-		userId: 110,
-		moment: "2023-10-10",
-		label: "留言",
-		color: "red",
-		imgurl: "eeeee",
-	},
-	{
-		type: 1,
-		message:
-			"山一程，水一程，身向榆关深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
-		name: "resr",
-		userId: 110,
-		moment: "2023-10-10",
-		label: "留言",
-		color: "red",
-		imgurl: "eeeee",
-	},
-	{
-		type: 1,
-		message:
-			"一程，水一程，身向榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
-		name: "resr",
-		userId: 110,
-		moment: "2023-10-10",
-		label: "留言",
-		color: "red",
-		imgurl: "eeeee",
-	},
-	{
-		type: 1,
-		message:
-			"山一，水一程，身向榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
-		name: "resr",
-		userId: 110,
-		moment: "2023-10-10",
-		label: "留言",
-		color: "red",
-		imgurl: "eeeee",
-	},
-	{
-		type: 1,
-		message:
-			"山一程，水一程，身向榆关那畔行。夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。故园无此声。",
-		name: "resr",
-		userId: 110,
-		moment: "2023-10-10",
-		label: "留言",
-		color: "red",
-		imgurl: "eeeee",
-	},
-];
+const getCardList = async (id) => {
+	const { data } = await getLabelList(id);
+	cardList.value = data;
+	console.log(data);
+};
+onMounted(() => {
+	getCardList();
+});
+const cardList = ref([]);
 // 当前选中的卡片
 const currentcard = ref(-1);
 // 编辑卡片
 const changeCard = (index) => {
 	if (currentcard.value != index) {
-		title.value = "留言";
+		title.value = "详情";
 		currentcard.value = index;
 		isShowModel.value = true;
 	} else {
@@ -114,7 +44,8 @@ const list = [
 	"无题",
 ];
 const toList = (index) => {
-	selected.value = index;
+	selected.value = list[index];
+	getCardList(index);
 };
 async function onClick() {
 	let res = await getLists(arr);
@@ -148,11 +79,11 @@ const showModel = () => {
 			</li>
 			<li
 				class="label-item"
-				:class="{ selected: selected == index }"
-				v-for="index in list"
+				:class="{ selected: selected == item }"
+				v-for="(item, index) in list"
 				:key="index"
 				@click="toList(index)">
-				{{ index }}
+				{{ item }}
 			</li>
 		</ul>
 		<div class="main">
