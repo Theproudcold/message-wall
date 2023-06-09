@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from "vue";
+import { addWall } from "@/api/wall.js";
+import { getFormatData, cardColor, cardbgColor } from "@/utils/data";
 import HyButton from "@/components/HyButton.vue";
 const props = defineProps({
 	labels: {
@@ -10,26 +12,26 @@ const emit = defineEmits(["quit"]);
 const close = () => {
 	emit("quit");
 };
+const add = (wall) => {
+	const data = addWall(wall);
+	console.log(data);
+};
 // 提交
 const submit = () => {
+	const wall = {
+		type: 0,
+		message: message.value,
+		name: name.value,
+		userId: "213123",
+		moment: getFormatData(),
+		label: isSelect.value,
+		color: labelColor.value,
+	};
+	console.log(wall);
+	add(wall);
 	emit("quit");
 };
-//卡片背景色
-const cardColor = [
-	"rgba(252,175,162,0.30)",
-	"rgba(255,227,148,0.30)",
-	"rgba(146,230,245,0.30)",
-	"rgba(168,237,138,0.30)",
-	"rgba(202,167,247,0.30)",
-	"rgba(212,212,212,0.30)",
-];
-const cardbgColor = [
-	"rgba(252,175,162,1)",
-	"rgba(255,227,148,1)",
-	"rgba(146,230,245,1)",
-	"rgba(168,237,138,1)",
-	"rgba(202,167,247,1)",
-];
+
 const isSelect = ref(0);
 const chooseColor = (index) => {
 	isSelect.value = index;

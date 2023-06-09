@@ -1,4 +1,5 @@
 <script setup>
+import { cardColor } from "@/utils/data";
 const props = defineProps({
 	note: {
 		default: {},
@@ -17,7 +18,7 @@ const list = [
 ];
 </script>
 <template>
-	<div class="card">
+	<div class="card" :style="{ backgroundColor: cardColor[note.color] }">
 		<div class="card-header">
 			<p class="time">{{ note.moment }}</p>
 			<p class="label">{{ list[note.label] }}</p>
@@ -29,7 +30,7 @@ const list = [
 		</div>
 		<div class="card-bottom">
 			<div class="state">点赞</div>
-			<div class="name">张三</div>
+			<div class="name">{{ note.name }}</div>
 		</div>
 	</div>
 </template>
@@ -40,7 +41,6 @@ const list = [
 	padding: 10px;
 	// LEARN:解决抖动问题
 	border: 1px solid transparent;
-	background-color: rgba($color: #fcafa2, $alpha: 0.4);
 	transition: all 0.3s;
 	.card-header {
 		display: flex;
@@ -51,7 +51,7 @@ const list = [
 		}
 	}
 	.card-main {
-		max-width: 260px;
+		width: 260px;
 		padding: 20px 0;
 		p {
 			font-size: 14px;

@@ -7,11 +7,13 @@ import NewCard from "@/components/NewCard.vue";
 import CardDetail from "@/components/CardDetail.vue";
 import { onMounted, ref } from "vue";
 import { getLabelList } from "@/api/wall.js";
+
+import { labelList } from "@/utils/data";
 const title = ref("留言");
+// 获取对应标签列表数据
 const getCardList = async (id) => {
 	const { data } = await getLabelList(id);
 	cardList.value = data;
-	console.log(data);
 };
 onMounted(() => {
 	getCardList();
@@ -32,20 +34,10 @@ const changeCard = (index) => {
 };
 
 const selected = ref(-1);
-const list = [
-	"留言",
-	"目标",
-	"理想",
-	"爱情",
-	"学业",
-	"家庭",
-	"事业",
-	"友情",
-	"无题",
-];
+
 const toList = (index) => {
-	selected.value = list[index];
-	getCardList(index);
+	selected.value = index;
+	getCardList(selected.value);
 };
 async function onClick() {
 	let res = await getLists(arr);
@@ -58,7 +50,14 @@ const addCard = () => {
 	title.value = "写留言";
 	showModel();
 };
+const createCard = () => {
+	showModel();
+	getCardList(selected.value);
+};
 const showModel = () => {
+	if (currentcard.value != -1) {
+		currentcard.value = -1;
+	}
 	isShowModel.value = !isShowModel.value;
 };
 </script>
@@ -79,8 +78,8 @@ const showModel = () => {
 			</li>
 			<li
 				class="label-item"
-				:class="{ selected: selected == item }"
-				v-for="(item, index) in list"
+				:class="{ selected: selected == index }"
+				v-for="(item, index) in labelList"
 				:key="index"
 				@click="toList(index)">
 				{{ item }}
@@ -98,8 +97,8 @@ const showModel = () => {
 		</div>
 		<HyModal :isShow="isShowModel" :title="title" @cloose="showModel">
 			<NewCard
-				:labels="list"
-				@quit="showModel"
+				:labels="labelList"
+				@quit="createCard"
 				v-if="currentcard == -1"></NewCard>
 			<CardDetail v-else :card="cardList[currentcard]"></CardDetail>
 		</HyModal>
