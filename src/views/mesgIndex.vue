@@ -14,6 +14,9 @@ const title = ref("留言");
 const getCardList = async (id) => {
 	const { data } = await getLabelList(id);
 	cardList.value = data;
+	cardList.value.sort(function (a, b) {
+		return new Date(b.moment) - new Date(a.moment);
+	});
 };
 onMounted(() => {
 	getCardList();

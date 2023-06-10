@@ -17,6 +17,14 @@ export function addWall(wall) {
 		data: wall,
 	});
 }
+// 添加评论
+export function addComments(Comment) {
+	return request({
+		url: "/addComment",
+		method: "post",
+		data: Comment,
+	});
+}
 // 获取卡片详情
 export function getCard(id) {
 	return request({

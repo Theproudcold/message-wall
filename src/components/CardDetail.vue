@@ -2,7 +2,8 @@
 import Card from "./Card.vue";
 import { onMounted, ref, watch } from "vue";
 import HyButton from "./HyButton.vue";
-import { getComment, getCard } from "@/api/wall";
+import { getComment, getCard, addComments } from "@/api/wall";
+import { getFormatDataTimeSecond } from "@/utils/data";
 const props = defineProps({
 	cardID: {},
 });
@@ -10,11 +11,30 @@ const cardID = ref(props.cardID.id);
 const getCommentList = async (id) => {
 	const { data } = await getComment(id);
 	commont.value = data;
+	commont.value.sort(function (a, b) {
+		return new Date(b.moment) - new Date(a.moment);
+	});
+	console.log(commont.value);
 };
 const card = ref({});
 const getCardContent = async (id) => {
 	const { data } = await getCard(id);
 	card.value = data;
+};
+// 提交评论
+const submitComments = () => {
+	const comments = {
+		wallId: cardID.value,
+		userId: "12314",
+		imgurl: null,
+		comment: message.value,
+		name: name.value,
+		moment: getFormatDataTimeSecond(),
+	};
+	console.log(comments);
+	addComments(comments).then(() => {
+		getCommentList(cardID.value);
+	});
 };
 onMounted(() => {
 	getCardContent(cardID.value);
@@ -43,7 +63,6 @@ const portrait = [
 	"linear-gradient(180deg,#FFDC83 0%,#F88816 100%)",
 	"linear-gradient(180deg,#FFBA8D 1%,#EB6423 100%)",
 ];
-
 const commont = ref([]);
 const message = ref("");
 const name = ref("");
@@ -70,7 +89,7 @@ const name = ref("");
 					class="name"
 					type="text"
 					placeholder="签名" />
-				<HyButton round="true">确定</HyButton>
+				<HyButton round="true" @click="submitComments">确定</HyButton>
 			</div>
 			<p class="title">评论&nbsp;{{ commont.length }}</p>
 			<div class="commont">
@@ -86,7 +105,7 @@ const name = ref("");
 					<div class="commont-msg">
 						<div class="msg-top">
 							<p class="name">{{ item.name }}</p>
-							<p class="time">{{ item.ctime }}</p>
+							<p class="time">{{ item.moment }}</p>
 						</div>
 						<div class="msg-main">{{ item.comment }}</div>
 					</div>
