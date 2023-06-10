@@ -1,12 +1,32 @@
 <script setup>
 import Card from "./Card.vue";
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import HyButton from "./HyButton.vue";
+import { getComment, getCard } from "@/api/wall";
 const props = defineProps({
-	card: {
-		default: {},
-	},
+	cardID: {},
 });
+const cardID = ref(props.cardID.id);
+const getCommentList = async (id) => {
+	const { data } = await getComment(id);
+	commont.value = data;
+};
+const card = ref({});
+const getCardContent = async (id) => {
+	const { data } = await getCard(id);
+	card.value = data;
+};
+onMounted(() => {
+	getCardContent(cardID.value);
+	getCommentList(cardID.value);
+});
+watch(
+	() => props.cardID,
+	(newvalue, oldValue) => {
+		getCardContent(newvalue.id);
+		getCommentList(newvalue.id);
+	}
+);
 const portrait = [
 	"linear-gradient(180deg,#FFA9D9 0%,#E83D3D 100%)",
 	"linear-gradient(180deg,#FFA7EB 0%,#F026A8 100%)",
@@ -24,20 +44,7 @@ const portrait = [
 	"linear-gradient(180deg,#FFBA8D 1%,#EB6423 100%)",
 ];
 
-const commont = [
-	{
-		name: "张三",
-		ctime: "2023-1-1",
-		commont: "展示大苏打大大",
-		color: 1,
-	},
-	{
-		name: "张三",
-		ctime: "2023-1-1",
-		commont: "展示大苏打大大",
-		color: 1,
-	},
-];
+const commont = ref([]);
 const message = ref("");
 const name = ref("");
 </script>
@@ -74,14 +81,14 @@ const name = ref("");
 					<div
 						class="user-head"
 						:style="{
-							backgroundImage: portrait[item.color],
+							backgroundImage: portrait[index],
 						}"></div>
 					<div class="commont-msg">
 						<div class="msg-top">
 							<p class="name">{{ item.name }}</p>
 							<p class="time">{{ item.ctime }}</p>
 						</div>
-						<div class="msg-main">{{ item.commont }}</div>
+						<div class="msg-main">{{ item.comment }}</div>
 					</div>
 				</div>
 			</div>

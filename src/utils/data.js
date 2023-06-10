@@ -7,7 +7,20 @@ export function getFormatData() {
 	day = day < 10 ? "0" + day : day;
 	return `${year}-${month}-${day}`;
 }
-
+export function getFormatDataTime() {
+	const currentDate = new Date();
+	const year = currentDate.getFullYear();
+	let month = currentDate.getMonth() + 1;
+	let day = currentDate.getDate();
+	let hour = currentDate.getHours();
+	let minute = currentDate.getMinutes();
+	let second = currentDate.getSeconds();
+	month = month < 10 ? "0" + month : month;
+	day = day < 10 ? "0" + day : day;
+	hour = hour < 10 ? "0" + hour : hour;
+	minute = minute < 10 ? "0" + minute : minute;
+	return `${year}-${month}-${day} ${hour}:${minute}`;
+}
 // label 列表
 export const labelList = [
 	"留言",
