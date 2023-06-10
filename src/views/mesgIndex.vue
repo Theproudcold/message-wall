@@ -32,9 +32,7 @@ const changeCard = (index) => {
 		isShowModel.value = false;
 	}
 };
-
 const selected = ref(-1);
-
 const toList = (index) => {
 	selected.value = index;
 	getCardList(selected.value);
@@ -52,7 +50,7 @@ const addCard = () => {
 };
 const createCard = () => {
 	showModel();
-	getCardList(selected.value);
+	getCardList();
 };
 const showModel = () => {
 	if (currentcard.value != -1) {
@@ -100,7 +98,7 @@ const showModel = () => {
 				:labels="labelList"
 				@quit="createCard"
 				v-if="currentcard == -1"></NewCard>
-			<CardDetail v-else :card="cardList[currentcard]"></CardDetail>
+			<CardDetail v-else :cardID="cardList[currentcard]"></CardDetail>
 		</HyModal>
 		<div v-if="!isShowModel" class="add" @click="addCard">
 			<i class="iconfont icon-plus"></i>

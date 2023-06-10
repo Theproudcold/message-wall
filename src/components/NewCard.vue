@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { addWall } from "@/api/wall.js";
-import { getFormatData, cardColor, cardbgColor } from "@/utils/data";
+import { getFormatDataTime, cardColor, cardbgColor } from "@/utils/data";
 import HyButton from "@/components/HyButton.vue";
 const props = defineProps({
 	labels: {
@@ -12,10 +12,6 @@ const emit = defineEmits(["quit"]);
 const close = () => {
 	emit("quit");
 };
-const add = (wall) => {
-	const data = addWall(wall);
-	console.log(data);
-};
 // 提交
 const submit = () => {
 	const wall = {
@@ -23,13 +19,14 @@ const submit = () => {
 		message: message.value,
 		name: name.value,
 		userId: "213123",
-		moment: getFormatData(),
+		moment: getFormatDataTime(),
 		label: isSelect.value,
 		color: labelColor.value,
 	};
-	console.log(wall);
-	add(wall);
-	emit("quit");
+	// 添加
+	addWall(wall).then(() => {
+		emit("quit");
+	});
 };
 
 const isSelect = ref(0);
