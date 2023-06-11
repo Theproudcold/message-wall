@@ -20,8 +20,8 @@ const submit = () => {
 		name: name.value,
 		userId: "213123",
 		moment: getFormatDataTime(),
-		label: isSelect.value,
-		color: labelColor.value,
+		label: labelColor.value,
+		color: isSelect.value,
 	};
 	// 添加
 	addWall(wall).then(() => {
