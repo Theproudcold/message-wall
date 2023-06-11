@@ -1,11 +1,21 @@
 import { defineStore } from "pinia";
 export const mainStore = defineStore("main", {
 	state: () => ({
-		isShowNav: true, // 是否显示底部导航
-		n: 100,
+		token: "",
 	}),
 	getters: {},
 	actions: {
 		addCount() {},
+	},
+	// 数据持久化
+	persist: {
+		enabled: true,
+		strategies: [
+			{
+				key: "token",
+				storage: sessionStorage,
+				paths: ["token"], // 修改为正确的属性名
+			},
+		],
 	},
 });

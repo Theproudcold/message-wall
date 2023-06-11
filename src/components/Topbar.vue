@@ -1,7 +1,11 @@
 <script setup>
 import { ref } from "vue";
 import HyButton from "./HyButton.vue";
+import { login } from "@/api/user";
+import { mainStore } from "@/store/index";
 import { useRouter } from "vue-router";
+
+const store = mainStore();
 const nav = ref([]);
 nav.value = [
 	{
@@ -21,19 +25,29 @@ const onClick = (type) => {
 // 登录页的显示与隐藏
 const show = ref(false);
 const showLogin = () => {
-	show.value = !show.value;
-};
-// 关闭登录页
-const quit = () => {
-	show.value = false;
+	if (store.token == "") {
+		show.value = !show.value;
+	}
 };
 
 // 登录
 const username = ref("");
 const password = ref("");
-const login = () => {
-	alert("登录成功");
+const goLogin = async () => {
+	const user = {
+		username: username.value,
+		password: password.value,
+	};
+	const { data } = await login(user);
+	if (data) {
+		store.$patch((state) => {
+			state.token = data;
+		});
+		show.value = !show.value;
+		alert("登录成功");
+	}
 };
+const userNav = ref(false);
 // 注册
 const router = useRouter();
 const register = () => {
@@ -54,15 +68,26 @@ const register = () => {
 				>{{ item.title }}
 			</hy-button>
 		</div>
-		<div class="topbar-right">
+		<div
+			class="topbar-right"
+			@mouseenter="userNav = true"
+			@mouseleave="userNav = false">
 			<div class="moon"></div>
 			<div class="user" @click="showLogin">
-				<div class="nouser"></div>
+				<div class="nouser">
+					<img v-if="store.token" src="../assets/logo.png" alt="" />
+					<ul
+						class="dropDown-nav"
+						v-if="store.token && userNav"
+						@mouseleave="userNav = true">
+						<li>退出</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<transition name="showsignin">
 			<div class="signin" v-show="show">
-				<i class="quit iconfont icon-close" @click="quit"></i>
+				<i class="quit iconfont icon-close" @click="showLogin"></i>
 				<p class="welcome">欢迎登录</p>
 				<h2 class="title">留言墙</h2>
 				<div class="signin-body">
@@ -77,7 +102,7 @@ const register = () => {
 						type="password"
 						placeholder="密码" />
 				</div>
-				<hy-button class="login" @click="login">登录</hy-button>
+				<hy-button class="login" @click="goLogin">登录</hy-button>
 				<div class="signin-bottom">
 					<p class="forget">忘记密码？</p>
 					<p class="register" @click="register">注册</p>
@@ -127,6 +152,7 @@ const register = () => {
 	.topbar-right {
 		display: flex;
 		align-items: center;
+		height: 100%;
 		.user {
 			position: relative;
 			height: 36px;
@@ -141,6 +167,22 @@ const register = () => {
 					rgba(81, 169, 255, 0.5),
 					#51a9ff
 				);
+				img {
+					width: 100%;
+					height: 100%;
+				}
+				.dropDown-nav {
+					position: absolute;
+					top: 44px;
+					left: -4px;
+					background-color: #fff;
+					li {
+						position: relative;
+						font-size: 14px;
+						width: 44px;
+						padding: 4px 8px;
+					}
+				}
 			}
 		}
 	}
