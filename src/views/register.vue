@@ -1,11 +1,27 @@
 <script setup>
 import { ref } from "vue";
 import HyButton from "../components/HyButton.vue";
-const username = ref("");
-const password = ref("");
-const mail = ref("");
+import { register } from "@/api/user";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const user = ref({
+	username: "",
+	password: "",
+	mail: "",
+});
 let showPsw = ref(true);
 let type = ref("password");
+const msg = ref("");
+const goRegister = async () => {
+	const res = await register(user.value);
+	if (res.code == 200) {
+		alert("注册成功");
+		router.push("/");
+	}
+	if (res.code == 0) {
+		msg.value = res.msg;
+	}
+};
 const show = (id) => {
 	const arr = ["password", "text"];
 	showPsw.value = !showPsw.value;
@@ -23,14 +39,14 @@ const show = (id) => {
 				<p class="hint">该账号可登录 hypo 开发的所有产品</p>
 				<div class="inputs">
 					<input
-						v-model="username"
+						v-model="user.username"
 						placeholder="请输入你优雅的用户名"
 						type="text"
 						name="" />
 				</div>
 				<div class="inputs psw">
 					<input
-						v-model="password"
+						v-model="user.password"
 						placeholder="请输入你复杂到极致的密码"
 						:type="type"
 						name="" />
@@ -42,13 +58,16 @@ const show = (id) => {
 				</div>
 				<div class="inputs">
 					<input
-						v-model="mail"
+						v-model="user.mail"
 						placeholder="请输入你板板正正的邮箱"
 						type="text"
 						name="" />
 				</div>
+				<p class="msg" v-if="msg">{{ msg }}</p>
 				<div class="button">
-					<HyButton size="max" round="true">注册</HyButton>
+					<HyButton size="max" round="true" @click="goRegister"
+						>注册</HyButton
+					>
 				</div>
 			</div>
 		</div>
@@ -99,6 +118,10 @@ const show = (id) => {
 						border-color: var(--gray-1);
 					}
 				}
+			}
+			.msg {
+				font-size: 0.875rem;
+				color: #fa5247;
 			}
 			.psw {
 				position: relative;

@@ -29,7 +29,11 @@ const showLogin = () => {
 		show.value = !show.value;
 	}
 };
-
+// 退出登录
+const quit = () => {
+	store.token = "";
+	alert("退出成功");
+};
 // 登录
 const username = ref("");
 const password = ref("");
@@ -80,7 +84,7 @@ const register = () => {
 						class="dropDown-nav"
 						v-if="store.token && userNav"
 						@mouseleave="userNav = true">
-						<li>退出</li>
+						<li @click="quit">退出</li>
 					</ul>
 				</div>
 			</div>
