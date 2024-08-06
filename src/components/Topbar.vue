@@ -32,8 +32,12 @@ const showLogin = () => {
 // 退出登录
 const quit = () => {
 	store.token = "";
-	alert("退出成功");
+	ElMessage({
+		message: "退出成功",
+		type: "success",
+	});
 };
+const msg = ref("");
 // 登录
 const username = ref("");
 const password = ref("");
@@ -42,13 +46,18 @@ const goLogin = async () => {
 		username: username.value,
 		password: password.value,
 	};
-	const { data } = await login(user);
-	if (data) {
+	const res = await login(user);
+	if (res.data) {
 		store.$patch((state) => {
 			state.token = data;
 		});
 		show.value = !show.value;
-		alert("登录成功");
+		ElMessage({
+			message: "登录成功",
+			type: "success",
+		});
+	} else {
+		msg.value = res.msg;
 	}
 };
 const userNav = ref(false);
@@ -106,6 +115,7 @@ const register = () => {
 						type="password"
 						placeholder="密码" />
 				</div>
+				<p class="hint" style="color: #cf4444">{{ msg }}</p>
 				<hy-button class="login" @click="goLogin">登录</hy-button>
 				<div class="signin-bottom">
 					<p class="forget">忘记密码？</p>

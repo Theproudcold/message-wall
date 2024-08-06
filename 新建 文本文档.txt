@@ -1,0 +1,11 @@
+
+server {
+    listen 80;
+    server_name blog.hypoy.cn;
+    root /home/lighthouse/message-wall/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

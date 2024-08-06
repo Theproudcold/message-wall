@@ -15,7 +15,10 @@ const msg = ref("");
 const goRegister = async () => {
 	const res = await register(user.value);
 	if (res.code == 200) {
-		alert("注册成功");
+		ElMessage({
+			message: "注册成功",
+			type: "success",
+		});
 		router.push("/");
 	}
 	if (res.code == 0) {
